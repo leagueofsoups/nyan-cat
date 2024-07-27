@@ -2,7 +2,7 @@
     const nameList = ["GB", "bday", "breakfast", "easter", "grumpy", "jacksnyan", "jazz", "mexinyan", "mummy", "nyan", "nyancoin", "nyaninja", "paddy", "pikanyan", "sadnyan", "slomo", "technyancolor", "uhmurica", "vday", "xmas", "zombie"];
 
     let timer = setInterval(() => {
-        const statusItem = document.querySelector('div[title="Nyan Cat"] > a');
+        const statusItem = document.querySelector("#zhengrenzhe\\.nyan-cat > a");
 
         if (!statusItem) return;
         else clearInterval(timer);
