@@ -54,6 +54,7 @@ function activate(context) {
     context.subscriptions.push(uninstallCMD);
     context.subscriptions.push(reloadCMD);
     function backup() {
+	nyancat.appendLine("backup()");
         try {
             fs.statSync(htmlBackupPath);
         }
@@ -64,23 +65,32 @@ function activate(context) {
         }
     }
     function injectScript() {
+	nyancat.appendLine("injectScript()");
         let htmlFileContent = fs.readFileSync(htmlFilePath, 'utf-8');
         if (!htmlFileContent.includes('nyan-cat.js')) {
             const inject = `<script src="${f(__dirname + '/nyan-cat.js')}"></script>`;
             htmlFileContent = htmlFileContent.replace('</html>', `${inject}\n</html>`);
-            htmlFileContent = htmlFileContent.replace("script-src 'self'", "script-src 'self' 'unsafe-inline'");
-            fs.writeFileSync(htmlFilePath, htmlFileContent, 'utf-8');
+            htmlFileContent = htmlFileContent.replace("script-src", "script-src 'unsafe-inline'");
+	    fs.writeFileSync(htmlFilePath, htmlFileContent, 'utf-8'); 
         }
     }
     function injectConfiguration() {
+	nyancat.appendLine("injectConfiguration()");
         const config = vscode.workspace.getConfiguration('NyanCat');
         const inject = `<script id="NyanCatConfiguration">window.NyanCatConfiguration = ${JSON.stringify(config)}</script>`;
         let htmlFileContent = fs.readFileSync(htmlFilePath, 'utf-8');
         htmlFileContent = htmlFileContent.replace(/\t?<script.*NyanCatConfiguration.*script>\n?/g, '');
         htmlFileContent = htmlFileContent.replace('</body>', `${inject}\n</body>`);
-        fs.writeFileSync(htmlFilePath, htmlFileContent, 'utf-8');
+        try {
+          fs.writeFileSync(htmlFilePath, htmlFileContent, 'utf-8');
+        } catch (err) {
+          nyancat.appendLine("is it permission problem?");
+	  nyancat.appendLine("retry under root user:");
+	  nyancat.appendLine("sudo -E code --user-data-dir=~ --no-sandbox --verbose --extensions-dir ~/.vscode/extensions");
+        }
     }
     function prepareUninstall() {
+	nyancat.appendLine("prepareUninstall()");
         fs.unlinkSync(htmlFilePath);
         fs.renameSync(htmlBackupPath, htmlFilePath);
     }
