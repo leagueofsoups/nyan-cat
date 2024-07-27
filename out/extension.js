@@ -68,7 +68,7 @@ function activate(context) {
 	nyancat.appendLine("injectScript()");
         let htmlFileContent = fs.readFileSync(htmlFilePath, 'utf-8');
         if (!htmlFileContent.includes('nyan-cat.js')) {
-            const inject = `<script src="${f(__dirname + '/nyan-cat.js')}"></script>`;
+            const inject = `<script src="${__dirname + '/nyan-cat.js'}"></script>`;
             htmlFileContent = htmlFileContent.replace('</html>', `${inject}\n</html>`);
             htmlFileContent = htmlFileContent.replace("script-src", "script-src 'unsafe-inline'");
 	    fs.writeFileSync(htmlFilePath, htmlFileContent, 'utf-8'); 
