@@ -71,6 +71,7 @@ function activate(context) {
             const inject = `<script src="${__dirname + '/nyan-cat.js'}"></script>`;
             htmlFileContent = htmlFileContent.replace('</html>', `${inject}\n</html>`);
             htmlFileContent = htmlFileContent.replace("script-src", "script-src 'unsafe-inline'");
+            htmlFileContent = htmlFileContent.replace("amdLoader", "amdLoader myEscapePolicy");
 	    fs.writeFileSync(htmlFilePath, htmlFileContent, 'utf-8'); 
         }
     }

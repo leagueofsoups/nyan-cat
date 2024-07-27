@@ -20,7 +20,7 @@
 
     function injectCSS(dataUrl) {
         const style = document.createElement('STYLE');
-        style.innerHTML = `
+        data = `
             .nyan-cat{
                 width: 50px;
                 height: 100%;
@@ -113,6 +113,11 @@
                 background-size: 36px;
             }
         `;
+        const escapeHTMLPolicy = trustedTypes.createPolicy('myEscapePolicy', {
+          createHTML: string => string.replace(/\</g, '&lt;')
+        });
+	const escaped = escapeHTMLPolicy.createHTML(data);
+	style.innerHTML = escaped;
         document.body.appendChild(style);
     }
 
