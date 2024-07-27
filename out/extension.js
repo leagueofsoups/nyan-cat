@@ -11,7 +11,7 @@ function activate(context) {
     bar_item.text = "       ";
     bar_item.tooltip = "Nyan Cat";
     bar_item.show();
-    const htmlDirPath = path_1.normalize(`${path_1.dirname(require.main.filename)}/vs/code/electron-browser/workbench`);
+    const htmlDirPath = path_1.normalize(`${path_1.dirname(require.main.filename)}/vs/code/electron-sandbox/workbench`);
     nyancat.appendLine(`htmlDirPath: ${htmlDirPath}`);
     const htmlFilePath = path_1.normalize(`${htmlDirPath}/workbench.html`);
     const htmlBackupPath = path_1.normalize(`${htmlDirPath}/index-nyan-cat-backup.html`);
