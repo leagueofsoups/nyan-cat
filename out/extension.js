@@ -4,12 +4,15 @@ const vscode = require("vscode");
 const fs = require("fs");
 const f = require("file-url");
 const path_1 = require("path");
+let nyancat = vscode.window.createOutputChannel("NyanCat");
 function activate(context) {
+    nyancat.appendLine("activate()");
     const bar_item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     bar_item.text = "       ";
     bar_item.tooltip = "Nyan Cat";
     bar_item.show();
     const htmlDirPath = path_1.normalize(`${path_1.dirname(require.main.filename)}/vs/code/electron-browser/workbench`);
+    nyancat.appendLine(`htmlDirPath: ${htmlDirPath}`);
     const htmlFilePath = path_1.normalize(`${htmlDirPath}/workbench.html`);
     const htmlBackupPath = path_1.normalize(`${htmlDirPath}/index-nyan-cat-backup.html`);
     // backup index.html
