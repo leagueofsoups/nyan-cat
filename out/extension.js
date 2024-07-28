@@ -64,15 +64,25 @@ function activate(context) {
             }
         }
     }
+    function errorInfo() {
+      nyancat.appendLine("is it permission problem?");
+      nyancat.appendLine("retry under root user:");
+      nyancat.appendLine("sudo -E code --user-data-dir=~ --no-sandbox --verbose --extensions-dir ~/.vscode/extensions");
+      vscode.window.showInformationMessage("Permission problem! Check NyanCat channel in OUTPUT tab", 'Reload Window');
+    }
     function injectScript() {
-	nyancat.appendLine("injectScript()");
+	nyancat.appendLine(`injectScript() ${htmlFilePath}`);
         let htmlFileContent = fs.readFileSync(htmlFilePath, 'utf-8');
         if (!htmlFileContent.includes('nyan-cat.js')) {
             const inject = `<script src="${__dirname + '/nyan-cat.js'}"></script>`;
             htmlFileContent = htmlFileContent.replace('</html>', `${inject}\n</html>`);
             htmlFileContent = htmlFileContent.replace("script-src", "script-src 'unsafe-inline'");
             htmlFileContent = htmlFileContent.replace("amdLoader", "amdLoader myEscapePolicy");
-	    fs.writeFileSync(htmlFilePath, htmlFileContent, 'utf-8'); 
+	    try {
+	      fs.writeFileSync(htmlFilePath, htmlFileContent, 'utf-8'); 
+            } catch (err) {
+              errorInfo();
+            }
         }
     }
     function injectConfiguration() {
@@ -85,9 +95,7 @@ function activate(context) {
         try {
           fs.writeFileSync(htmlFilePath, htmlFileContent, 'utf-8');
         } catch (err) {
-          nyancat.appendLine("is it permission problem?");
-	  nyancat.appendLine("retry under root user:");
-	  nyancat.appendLine("sudo -E code --user-data-dir=~ --no-sandbox --verbose --extensions-dir ~/.vscode/extensions");
+	  errorInfo();
         }
     }
     function prepareUninstall() {
